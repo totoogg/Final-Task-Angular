@@ -88,6 +88,19 @@ export class StationsComponent implements OnInit, OnDestroy {
     }));
   }
 
+  calculateDistance(lat1: number, lng1: number, lat2: number, lng2: number) {
+    const bc = Math.abs(lng1 - lng2) * Math.cos(lat2) * 111.3;
+    const ad = Math.abs(lng1 - lng2) * Math.cos(lat1) * 111.3;
+    const h = Math.sqrt(
+      Math.pow(Math.abs(lat1 - lat2) * 112, 2) -
+        Math.pow(0.5 * Math.abs(bc - ad), 2),
+    );
+    const r = bc > ad ? bc : ad;
+    const br = r - 0.5 * Math.abs(bc - ad);
+    const result = Math.sqrt(h * h - br * br);
+    return Math.round(result);
+  }
+
   onChanged(model: IUserMark) {
     this.userMark.set({
       ...model,
